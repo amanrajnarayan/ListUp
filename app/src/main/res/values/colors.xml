@@ -5,4 +5,11 @@
     <color name="colorPrimary">@android:color/holo_green_dark</color>
     <color name="colorPrimaryDark">@android:color/holo_green_dark</color>
     <color name="colorAccent">@android:color/white</color>
+    <color name="wisteria">#FFCDA3E1</color>
+    <color name="magnolia">#FEF7FF</color>
+    <color name="magnoliadark">#FCE9FF</color>
+    <color name="tiffanyblue">#FF98E3C6</color>
+    <color name="tiffanybluedark">#09D543</color>
+    <color name="ebony">#FF545C52</color>
+    <color name="iris">#FF454ADE</color>
 </resources>

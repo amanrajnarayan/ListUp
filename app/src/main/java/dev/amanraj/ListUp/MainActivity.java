@@ -5,14 +5,21 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,12 +36,42 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private DatabaseHandler db;
     private ProgressBar progressBar;
     private TextView progressText;
+    private ImageView hint_tap, hint_right, hint_left;
+
+    private static final String TAG = "Alarm";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        hint_tap = findViewById(R.id.tap_hint);
+        hint_left = findViewById(R.id.left_hint);
+        hint_right = findViewById(R.id.right_hint);
+        hint_tap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hint_tap.setVisibility(View.GONE);
+                hint_right.setVisibility(View.VISIBLE);
+            }
+        });
+        hint_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hint_right.setVisibility(View.GONE);
+                hint_left.setVisibility(View.VISIBLE);
+            }
+        });
+        hint_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hint_left.setVisibility(View.GONE);
+            }
+        });
+
+
+
 //        getSupportActionBar().hide();
 
         db = new DatabaseHandler(this);
@@ -64,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             }
         });
         updateProgress();
+        setAlarm();
     }
 
     //update progress method
@@ -98,5 +136,23 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     public void onTaskStatusChanged(){
         updateProgress();
     }
+
+
+    private void setAlarm(){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_IMMUTABLE);
+
+        //setting the alarm to start at 8pm
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY,12);
+        calendar.set(Calendar.MINUTE,56);
+        Log.d(TAG,"Alarm set");
+        //scheduling the alarm to repeat daily
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+    }
+
 }
-//testing github
+//pushing the notif

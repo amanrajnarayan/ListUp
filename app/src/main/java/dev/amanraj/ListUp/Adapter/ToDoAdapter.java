@@ -74,6 +74,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 //notifying the activity about task status change
                 if(mListener != null){
                     mListener.onTaskStatusChanged();
+
                 }
             }
         });

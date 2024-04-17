@@ -8,6 +8,25 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tap_hint"
+        android:src="@drawable/tap_hint"
+        android:visibility="visible"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/left_hint"
+        android:src="@drawable/left_hint"
+        android:visibility="gone"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/right_hint"
+        android:src="@drawable/right_hint"
+        android:visibility="gone"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,6 +57,8 @@
         android:progress="0"
         android:max="100"
         android:visibility="visible"
+        android:progressBackgroundTint="@color/magnoliadark"
+        android:progressTint="@color/tiffanybluedark"
         style="@android:style/Widget.ProgressBar.Horizontal" />
 
     <TextView
@@ -58,8 +79,9 @@
         android:layout_gravity="end"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="@android:color/holo_green_dark"
+        android:backgroundTint="@color/ic_launcher_background"
         android:src="@drawable/baseline_add" />
+
 <!--    <TextView-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
