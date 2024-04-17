@@ -12,6 +12,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,35 +43,61 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     private static final String TAG = "Alarm";
 
+    private static final String HINTS_PREF = "hints_pref";
+    private static final String HINTS_SHOWN_KEY = "hints_shown";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //initializing sharepreferences
+        SharedPreferences prefs = getSharedPreferences(HINTS_PREF,Context.MODE_PRIVATE);
+        boolean hintsShown = prefs.getBoolean(HINTS_SHOWN_KEY,false);
+
         hint_tap = findViewById(R.id.tap_hint);
         hint_left = findViewById(R.id.left_hint);
         hint_right = findViewById(R.id.right_hint);
-        hint_tap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hint_tap.setVisibility(View.GONE);
-                hint_right.setVisibility(View.VISIBLE);
-            }
-        });
-        hint_right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hint_right.setVisibility(View.GONE);
-                hint_left.setVisibility(View.VISIBLE);
-            }
-        });
-        hint_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hint_left.setVisibility(View.GONE);
-            }
-        });
+
+        if (!hintsShown) {
+            // hints haven't been shown before, showing them
+            hint_tap.setVisibility(View.VISIBLE);
+            hint_right.setVisibility(View.GONE);
+            hint_left.setVisibility(View.GONE);
+            // setting a click listener on tap hint to hide it and show the next hint
+            hint_tap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hint_tap.setVisibility(View.GONE);
+                    hint_right.setVisibility(View.VISIBLE);
+                    // updating sharedpreferences to indicate hints have been shown
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean(HINTS_SHOWN_KEY, true);
+                    editor.apply();
+                }
+            });
+            hint_right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hint_right.setVisibility(View.GONE);
+                    hint_left.setVisibility(View.VISIBLE);
+                }
+            });
+            hint_left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hint_left.setVisibility(View.GONE);
+                }
+            });
+        } else {
+            // hints have been shown before, hiding them
+            hint_tap.setVisibility(View.GONE);
+            hint_right.setVisibility(View.GONE);
+            hint_left.setVisibility(View.GONE);
+        }
+
 
         //checking if the notifications are enabled or not
         if(!NotificationManagerCompat.from(this).areNotificationsEnabled()){
@@ -160,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY,11);
-        calendar.set(Calendar.MINUTE,44);
+        calendar.set(Calendar.HOUR_OF_DAY,20);
+        calendar.set(Calendar.MINUTE,0);
         Log.d(TAG,"Alarm set");
         //scheduling the alarm to repeat daily
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
