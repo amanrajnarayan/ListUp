@@ -1,11 +1,13 @@
 package dev.amanraj.ListUp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -69,6 +71,17 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 hint_left.setVisibility(View.GONE);
             }
         });
+
+        //checking if the notifications are enabled or not
+        if(!NotificationManagerCompat.from(this).areNotificationsEnabled()){
+            //Notifications are not enabled, asking the user to enable them
+            Intent intent = new Intent();
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+
+            intent.putExtra("android.provider.extra.APP_PACKAGE",getPackageName());
+            startActivity(intent);
+        }
+
 
 
 
@@ -147,8 +160,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY,12);
-        calendar.set(Calendar.MINUTE,56);
+        calendar.set(Calendar.HOUR_OF_DAY,11);
+        calendar.set(Calendar.MINUTE,44);
         Log.d(TAG,"Alarm set");
         //scheduling the alarm to repeat daily
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
