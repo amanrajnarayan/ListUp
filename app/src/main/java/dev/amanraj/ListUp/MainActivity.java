@@ -195,4 +195,4 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
 
 }
-//pushing the notif
+//pushing the name change
