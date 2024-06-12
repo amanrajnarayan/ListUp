@@ -34,8 +34,12 @@ public class ToDoModel {
         return date;
     }
 
-    public void setDate(String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        this.date = dateFormat.format(new Date());
+//    public void setDate(String date) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//        this.date = dateFormat.format(new Date());
+//    }
+    //no need for this
+    public void setDate(String date){
+        this.date=date;
     }
 }
